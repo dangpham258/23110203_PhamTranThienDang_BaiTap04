@@ -7,8 +7,8 @@ const {
     resetPassword,
     getAccount,
 } = require("../controllers/userController");
+const { getHomepageData } = require("../controllers/productController");
 const auth = require("../middleware/auth");
-const delay = require("../middleware/delay");
 
 const routerAPI = express.Router();
 
@@ -22,8 +22,8 @@ routerAPI.post("/register", createUser);
 routerAPI.post("/login", handleLogin);
 routerAPI.post("/forgot-password", forgotPassword);
 routerAPI.post("/reset-password", resetPassword);
-
+routerAPI.get("/home", getHomepageData);
 routerAPI.get("/user", getUser);
-routerAPI.get("/account", auth, getAccount);
+routerAPI.get("/account", getAccount);
 
 module.exports = routerAPI; //export default

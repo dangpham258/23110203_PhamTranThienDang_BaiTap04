@@ -17,6 +17,7 @@ function App() {
                     user: {
                         email: res.email,
                         name: res.name,
+                        role: res.role || "User",
                     },
                 });
             }

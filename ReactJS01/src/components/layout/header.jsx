@@ -11,14 +11,15 @@ import { AuthContext } from "../context/auth.context";
 const Header = () => {
     const navigate = useNavigate();
     const { auth, setAuth } = useContext(AuthContext);
-    console.log(">>> check auth: ", auth);
+    const isAdmin = auth.isAuthenticated && auth.user.role === "Admin";
+    const displayName = auth?.user?.name || auth?.user?.email || "Khách";
     const items = [
         {
             label: <Link to={"/"}>Home Page</Link>,
             key: "home",
             icon: <HomeOutlined />,
         },
-        ...(auth.isAuthenticated
+        ...(isAdmin
             ? [
                   {
                       label: <Link to={"/user"}>Users</Link>,
@@ -27,49 +28,53 @@ const Header = () => {
                   },
               ]
             : []),
-
         {
-            label: `Welcome ${auth?.user?.email ?? ""}`,
+            label: `Xin chào ${displayName}`,
             key: "SubMenu",
             icon: <SettingOutlined />,
-            children: [
-                ...(auth.isAuthenticated
-                    ? [
-                          {
-                              label: (
-                                  <span
-                                      onClick={() => {
-                                          localStorage.clear("access_token");
-                                          setCurrent("home");
-                                          setAuth({
-                                              isAuthenticated: false,
-                                              user: {
-                                                  email: "",
-                                                  name: "",
-                                              },
-                                          });
-                                          navigate("/");
-                                      }}
-                                  >
-                                      Đăng xuất
-                                  </span>
-                              ),
-                              key: "logout",
-                          },
-                      ]
-                    : [
-                          {
-                              label: <Link to={"/login"}>Đăng nhập</Link>,
-                              key: "login",
-                          },
-                      ]),
-            ],
+            children: auth.isAuthenticated
+                ? [
+                      {
+                          label: (
+                              <span
+                                  onClick={() => {
+                                      localStorage.removeItem("access_token");
+                                      setAuth({
+                                          isAuthenticated: false,
+                                          user: {
+                                              email: "",
+                                              name: "",
+                                              role: "",
+                                          },
+                                      });
+                                      navigate("/");
+                                  }}
+                              >
+                                  Đăng xuất
+                              </span>
+                          ),
+                          key: "logout",
+                      },
+                  ]
+                : [
+                      {
+                          label: <Link to={"/login"}>Đăng nhập</Link>,
+                          key: "login",
+                      },
+                  ],
         },
     ];
 
     const [current, setCurrent] = useState("mail");
     const onClick = (e) => {
-        console.log("click", e);
+        if (e.key === "logout") {
+            localStorage.removeItem("access_token");
+            setAuth({
+                isAuthenticated: false,
+                user: { email: "", name: "", role: "" },
+            });
+            navigate("/");
+        }
         setCurrent(e.key);
     };
 

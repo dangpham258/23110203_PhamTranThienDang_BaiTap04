@@ -9,16 +9,23 @@ const {
 const createUser = async (req, res) => {
     const { name, email, password } = req.body;
     const data = await createUserService(name, email, password);
+    if (!data) {
+        return res.status(400).json({ EC: 1, EM: "Tạo tài khoản thất bại hoặc email đã tồn tại." });
+    }
     return res.status(200).json(data);
 };
 
 const handleLogin = async (req, res) => {
-    const { email, password } = req.body;
-    const data = await loginService(email, password);
+    const { email, password, role } = req.body;
+    const requestedRole = role || "User";
+    const data = await loginService(email, password, requestedRole);
     return res.status(200).json(data);
 };
 
 const getUser = async (req, res) => {
+    if (req.user?.role !== "Admin") {
+        return res.status(403).json({ message: "Chỉ Admin mới xem được danh sách người dùng." });
+    }
     const data = await getUserService();
     return res.status(200).json(data);
 };

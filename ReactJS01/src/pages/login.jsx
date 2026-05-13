@@ -1,5 +1,14 @@
-import React, { useContext } from "react";
-import { Button, Col, Divider, Form, Input, notification, Row } from "antd";
+import React, { useContext, useState } from "react";
+import {
+    Button,
+    Checkbox,
+    Col,
+    Divider,
+    Form,
+    Input,
+    notification,
+    Row,
+} from "antd";
 import { loginApi } from "../util/api";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../components/context/auth.context";
@@ -8,20 +17,23 @@ import { ArrowLeftOutlined } from "@ant-design/icons";
 const LoginPage = () => {
     const navigate = useNavigate();
     const { setAuth } = useContext(AuthContext);
+    const [selectedRole, setSelectedRole] = useState("User");
+
     const onFinish = async (values) => {
         const { email, password } = values;
-        const res = await loginApi(email, password);
+        const res = await loginApi(email, password, selectedRole);
         if (res && res.EC === 0) {
             localStorage.setItem("access_token", res.access_token);
             notification.success({
                 message: "LOGIN USER",
-                description: "Success",
+                description: "Đăng nhập thành công",
             });
             setAuth({
                 isAuthenticated: true,
                 user: {
                     email: res?.user?.email ?? "",
                     name: res?.user?.name ?? "",
+                    role: res?.user?.role ?? "User",
                 },
             });
             navigate("/");
@@ -75,6 +87,22 @@ const LoginPage = () => {
                         >
                             <Input.Password />
                         </Form.Item>
+                        <div className="mb-4 text-sm text-slate-600">
+                            <span className="mr-4">Vai trò đăng nhập:</span>
+                            <Checkbox
+                                checked={selectedRole === "User"}
+                                onChange={() => setSelectedRole("User")}
+                            >
+                                Thành viên
+                            </Checkbox>
+                            <Checkbox
+                                checked={selectedRole === "Admin"}
+                                onChange={() => setSelectedRole("Admin")}
+                                className="ml-4"
+                            >
+                                Admin
+                            </Checkbox>
+                        </div>
                         <Form.Item>
                             <Button type="primary" htmlType="submit">
                                 Login

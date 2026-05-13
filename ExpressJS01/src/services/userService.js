@@ -9,7 +9,7 @@ const saltRounds = 10;
 const generateOTP = () =>
     Math.floor(100000 + Math.random() * 900000).toString();
 
-const createUserService = async (name, email, password) => {
+const createUserService = async (name, email, password, role = "User") => {
     try {
         //check user exist
         const user = await User.findOne({ email });
@@ -24,7 +24,7 @@ const createUserService = async (name, email, password) => {
             name: name,
             email: email,
             password: hashPassword,
-            role: "User",
+            role,
         });
         return result;
     } catch (error) {
@@ -33,7 +33,7 @@ const createUserService = async (name, email, password) => {
     }
 };
 
-const loginService = async (email1, password) => {
+const loginService = async (email1, password, requestedRole = "User") => {
     try {
         //fetch user by email
         const user = await User.findOne({ email: email1 });
@@ -48,30 +48,38 @@ const loginService = async (email1, password) => {
                     EC: 2,
                     EM: "Email/Password không hợp lệ",
                 };
-            } else {
-                //create an access token
-                const payload = {
-                    email: user.email,
-                    name: user.name,
-                };
-                const access_token = jwt.sign(payload, process.env.JWT_SECRET, {
-                    expiresIn: process.env.JWT_EXPIRE,
-                });
+            }
+            if (user.role !== requestedRole) {
                 return {
-                    EC: 0,
-                    access_token,
-                    user: {
-                        email: user.email,
-                        name: user.name,
-                    },
+                    EC: 3,
+                    EM: `Vai trò ${requestedRole} không hợp lệ cho tài khoản này.`,
                 };
             }
-        } else {
+            //create an access token
+            const payload = {
+                id: user._id,
+                email: user.email,
+                name: user.name,
+                role: user.role,
+            };
+            const access_token = jwt.sign(payload, process.env.JWT_SECRET, {
+                expiresIn: process.env.JWT_EXPIRE,
+            });
             return {
-                EC: 1,
-                EM: "Email/Password không hợp lệ",
+                EC: 0,
+                access_token,
+                user: {
+                    id: user._id,
+                    email: user.email,
+                    name: user.name,
+                    role: user.role,
+                },
             };
         }
+        return {
+            EC: 1,
+            EM: "Email/Password không hợp lệ",
+        };
     } catch (error) {
         console.log(error);
         return null;

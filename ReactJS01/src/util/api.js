@@ -10,11 +10,12 @@ const createUserApi = (name, email, password) => {
     return axios.post(URL_API, data);
 };
 
-const loginApi = (email, password) => {
+const loginApi = (email, password, role) => {
     const URL_API = "/v1/api/login";
     const data = {
         email,
         password,
+        role,
     };
     return axios.post(URL_API, data);
 };
@@ -22,6 +23,16 @@ const loginApi = (email, password) => {
 const forgotPasswordApi = (email) => {
     const URL_API = "/v1/api/forgot-password";
     return axios.post(URL_API, { email });
+};
+
+const getHomeApi = () => {
+    const URL_API = "/v1/api/home";
+    return axios.get(URL_API);
+};
+
+const getAccountApi = () => {
+    const URL_API = "/v1/api/account";
+    return axios.get(URL_API);
 };
 
 const resetPasswordApi = (email, otp, newPassword) => {
@@ -40,4 +51,6 @@ export {
     forgotPasswordApi,
     resetPasswordApi,
     getUserApi,
+    getHomeApi,
+    getAccountApi,
 };

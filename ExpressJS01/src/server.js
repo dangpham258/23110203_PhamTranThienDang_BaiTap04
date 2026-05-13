@@ -6,9 +6,10 @@ const apiRoutes = require("./routes/api");
 const connection = require("./config/database");
 const { getHomepage } = require("./controllers/homeController");
 const cors = require("cors");
+const seedDatabase = require("./config/seed");
 const app = express(); // cấu hình app là express
-// cấu hình port, nếu tìm thấy port trong env, không thì trả về 8888
-const port = process.env.PORT || 8888;
+// cấu hình port, nếu tìm thấy port trong env, không thì trả về 8080
+const port = process.env.PORT || 8080;
 app.use(cors()); //config cors
 app.use(express.json()); // //config req.body cho json
 app.use(express.urlencoded({ extended: true })); // for form data
@@ -23,6 +24,7 @@ app.use("/v1/api/", apiRoutes);
     try {
         //kết nối database using mongoose
         await connection();
+        await seedDatabase();
         //lắng nghe port trong env
         app.listen(port, () => {
             console.log(`Backend Nodejs App listening on port ${port}`);
