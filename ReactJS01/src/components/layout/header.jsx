@@ -22,6 +22,11 @@ const Header = () => {
         ...(isAdmin
             ? [
                   {
+                      label: <Link to={"/admin"}>Admin Dashboard</Link>,
+                      key: "admin",
+                      icon: <SettingOutlined />,
+                  },
+                  {
                       label: <Link to={"/user"}>Users</Link>,
                       key: "user",
                       icon: <UsergroupAddOutlined />,

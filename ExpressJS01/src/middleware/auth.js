@@ -10,7 +10,14 @@ const auth = (req, res, next) => {
         "/reset-password",
         "/home",
     ];
-    if (white_lists.find((item) => "/v1/api" + item === req.originalUrl)) {
+    const isPublicRoute = white_lists.some(
+        (item) => "/v1/api" + item === req.originalUrl,
+    );
+    const isPublicProductDetail =
+        req.method === "GET" &&
+        /^\/v1\/api\/products\/[^/]+$/.test(req.originalUrl);
+
+    if (isPublicRoute || isPublicProductDetail) {
         next();
     } else {
         if (req?.headers?.authorization?.split(" ")?.[1]) {

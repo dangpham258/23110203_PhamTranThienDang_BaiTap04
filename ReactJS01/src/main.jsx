@@ -5,6 +5,8 @@ import "./styles/global.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RegisterPage from "./pages/register.jsx";
 import UserPage from "./pages/user.jsx";
+import AdminPage from "./pages/admin.jsx";
+import ProductDetailPage from "./pages/productDetail.jsx";
 import HomePage from "./pages/home.jsx";
 import LoginPage from "./pages/login.jsx";
 import ForgotPasswordPage from "./pages/forgotPassword.jsx";
@@ -22,6 +24,14 @@ const router = createBrowserRouter([
             {
                 path: "user",
                 element: <UserPage />,
+            },
+            {
+                path: "admin",
+                element: <AdminPage />,
+            },
+            {
+                path: "product/:id",
+                element: <ProductDetailPage />,
             },
         ],
     },

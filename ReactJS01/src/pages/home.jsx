@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { AuthContext } from "../components/context/auth.context";
 import { getHomeApi } from "../util/api";
 
@@ -33,16 +34,16 @@ const HomePage = () => {
                     <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
                         <div>
                             <p className="mb-3 text-sm uppercase tracking-[0.3em] text-cyan-300">
-                                Laptop Shop
+                                Cửa hàng Điện tử
                             </p>
                             <h1 className="text-4xl font-semibold sm:text-5xl">
-                                Mua laptop chính hãng, giá tốt, giao nhanh.
+                                Mua đồ công nghệ chính hãng, đa dạng danh mục.
                             </h1>
                             <p className="mt-5 max-w-2xl text-slate-200">
-                                Trang chủ bán laptop đầy đủ các khuyến mãi, sản
-                                phẩm mới nhất và best seller. Đăng nhập để xem
-                                danh sách user nếu bạn là admin hoặc thông tin
-                                cá nhân nếu bạn là thành viên.
+                                Trang chủ shop điện tử với nhiều sản phẩm từ
+                                laptop, smartphone, tablet đến smartwatch và tai
+                                nghe. Đăng nhập để xem trang quản trị, theo dõi
+                                tồn kho và quản lý sản phẩm.
                             </p>
                             {auth.isAuthenticated && (
                                 <div className="mt-6 rounded-3xl border border-white/20 bg-white/10 p-6 shadow-xl backdrop-blur-md">
@@ -103,7 +104,7 @@ const HomePage = () => {
             <main className="mx-auto max-w-6xl px-6 py-12">
                 <div className="mb-10 text-center">
                     <p className="text-sm uppercase tracking-[0.3em] text-cyan-500">
-                        Laptop nổi bật
+                        Sản phẩm điện tử nổi bật
                     </p>
                     <h2 className="mt-3 text-3xl font-semibold text-slate-900">
                         Khuyến mãi và sản phẩm mới
@@ -131,33 +132,39 @@ const HomePage = () => {
                             </div>
                             <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
                                 {homepageData.promotions.map((product) => (
-                                    <article
+                                    <Link
+                                        to={`/product/${product._id}`}
                                         key={product._id}
-                                        className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm"
+                                        className="group"
                                     >
-                                        <img
-                                            src={product.image}
-                                            alt={product.name}
-                                            className="h-44 w-full object-cover"
-                                        />
-                                        <div className="p-5">
-                                            <h4 className="text-lg font-semibold text-slate-900">
-                                                {product.name}
-                                            </h4>
-                                            <p className="mt-2 text-sm text-slate-600">
-                                                {product.brand}
-                                            </p>
-                                            <p className="mt-3 text-base font-medium text-slate-900">
-                                                {new Intl.NumberFormat(
-                                                    "vi-VN",
-                                                    {
-                                                        style: "currency",
-                                                        currency: "VND",
-                                                    },
-                                                ).format(product.price)}
-                                            </p>
-                                        </div>
-                                    </article>
+                                        <article className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                                            <img
+                                                src={product.image}
+                                                alt={product.name}
+                                                className="h-44 w-full object-cover"
+                                            />
+                                            <div className="p-5">
+                                                <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+                                                    {product.category}
+                                                </span>
+                                                <h4 className="mt-3 text-lg font-semibold text-slate-900">
+                                                    {product.name}
+                                                </h4>
+                                                <p className="mt-2 text-sm text-slate-600">
+                                                    {product.brand}
+                                                </p>
+                                                <p className="mt-3 text-base font-medium text-slate-900">
+                                                    {new Intl.NumberFormat(
+                                                        "vi-VN",
+                                                        {
+                                                            style: "currency",
+                                                            currency: "VND",
+                                                        },
+                                                    ).format(product.price)}
+                                                </p>
+                                            </div>
+                                        </article>
+                                    </Link>
                                 ))}
                             </div>
                         </section>
@@ -173,33 +180,39 @@ const HomePage = () => {
                             </div>
                             <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
                                 {homepageData.newest.map((product) => (
-                                    <article
+                                    <Link
+                                        to={`/product/${product._id}`}
                                         key={product._id}
-                                        className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm"
+                                        className="group"
                                     >
-                                        <img
-                                            src={product.image}
-                                            alt={product.name}
-                                            className="h-44 w-full object-cover"
-                                        />
-                                        <div className="p-5">
-                                            <h4 className="text-lg font-semibold text-slate-900">
-                                                {product.name}
-                                            </h4>
-                                            <p className="mt-2 text-sm text-slate-600">
-                                                {product.brand}
-                                            </p>
-                                            <p className="mt-3 text-base font-medium text-slate-900">
-                                                {new Intl.NumberFormat(
-                                                    "vi-VN",
-                                                    {
-                                                        style: "currency",
-                                                        currency: "VND",
-                                                    },
-                                                ).format(product.price)}
-                                            </p>
-                                        </div>
-                                    </article>
+                                        <article className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                                            <img
+                                                src={product.image}
+                                                alt={product.name}
+                                                className="h-44 w-full object-cover"
+                                            />
+                                            <div className="p-5">
+                                                <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+                                                    {product.category}
+                                                </span>
+                                                <h4 className="mt-3 text-lg font-semibold text-slate-900">
+                                                    {product.name}
+                                                </h4>
+                                                <p className="mt-2 text-sm text-slate-600">
+                                                    {product.brand}
+                                                </p>
+                                                <p className="mt-3 text-base font-medium text-slate-900">
+                                                    {new Intl.NumberFormat(
+                                                        "vi-VN",
+                                                        {
+                                                            style: "currency",
+                                                            currency: "VND",
+                                                        },
+                                                    ).format(product.price)}
+                                                </p>
+                                            </div>
+                                        </article>
+                                    </Link>
                                 ))}
                             </div>
                         </section>
@@ -215,33 +228,39 @@ const HomePage = () => {
                             </div>
                             <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
                                 {homepageData.bestSellers.map((product) => (
-                                    <article
+                                    <Link
+                                        to={`/product/${product._id}`}
                                         key={product._id}
-                                        className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm"
+                                        className="group"
                                     >
-                                        <img
-                                            src={product.image}
-                                            alt={product.name}
-                                            className="h-44 w-full object-cover"
-                                        />
-                                        <div className="p-5">
-                                            <h4 className="text-lg font-semibold text-slate-900">
-                                                {product.name}
-                                            </h4>
-                                            <p className="mt-2 text-sm text-slate-600">
-                                                {product.brand}
-                                            </p>
-                                            <p className="mt-3 text-base font-medium text-slate-900">
-                                                {new Intl.NumberFormat(
-                                                    "vi-VN",
-                                                    {
-                                                        style: "currency",
-                                                        currency: "VND",
-                                                    },
-                                                ).format(product.price)}
-                                            </p>
-                                        </div>
-                                    </article>
+                                        <article className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                                            <img
+                                                src={product.image}
+                                                alt={product.name}
+                                                className="h-44 w-full object-cover"
+                                            />
+                                            <div className="p-5">
+                                                <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+                                                    {product.category}
+                                                </span>
+                                                <h4 className="mt-3 text-lg font-semibold text-slate-900">
+                                                    {product.name}
+                                                </h4>
+                                                <p className="mt-2 text-sm text-slate-600">
+                                                    {product.brand}
+                                                </p>
+                                                <p className="mt-3 text-base font-medium text-slate-900">
+                                                    {new Intl.NumberFormat(
+                                                        "vi-VN",
+                                                        {
+                                                            style: "currency",
+                                                            currency: "VND",
+                                                        },
+                                                    ).format(product.price)}
+                                                </p>
+                                            </div>
+                                        </article>
+                                    </Link>
                                 ))}
                             </div>
                         </section>

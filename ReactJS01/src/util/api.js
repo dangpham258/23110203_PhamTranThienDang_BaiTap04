@@ -30,6 +30,21 @@ const getHomeApi = () => {
     return axios.get(URL_API);
 };
 
+const getProductDetailApi = (id) => {
+    const URL_API = `/v1/api/products/${id}`;
+    return axios.get(URL_API);
+};
+
+const getAdminProductsApi = () => {
+    const URL_API = "/v1/api/products";
+    return axios.get(URL_API);
+};
+
+const updateStockApi = (id, delta) => {
+    const URL_API = `/v1/api/products/${id}/stock`;
+    return axios.patch(URL_API, { delta });
+};
+
 const getAccountApi = () => {
     const URL_API = "/v1/api/account";
     return axios.get(URL_API);
@@ -52,5 +67,8 @@ export {
     resetPasswordApi,
     getUserApi,
     getHomeApi,
+    getProductDetailApi,
+    getAdminProductsApi,
+    updateStockApi,
     getAccountApi,
 };

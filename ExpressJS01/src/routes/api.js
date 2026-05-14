@@ -7,7 +7,12 @@ const {
     resetPassword,
     getAccount,
 } = require("../controllers/userController");
-const { getHomepageData } = require("../controllers/productController");
+const {
+    getHomepageData,
+    getProductDetail,
+    getAdminProductList,
+    updateProductStock,
+} = require("../controllers/productController");
 const auth = require("../middleware/auth");
 
 const routerAPI = express.Router();
@@ -23,6 +28,9 @@ routerAPI.post("/login", handleLogin);
 routerAPI.post("/forgot-password", forgotPassword);
 routerAPI.post("/reset-password", resetPassword);
 routerAPI.get("/home", getHomepageData);
+routerAPI.get("/products", getAdminProductList);
+routerAPI.get("/products/:id", getProductDetail);
+routerAPI.patch("/products/:id/stock", updateProductStock);
 routerAPI.get("/user", getUser);
 routerAPI.get("/account", getAccount);
 

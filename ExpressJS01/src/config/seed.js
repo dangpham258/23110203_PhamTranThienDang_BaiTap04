@@ -26,52 +26,130 @@ const seedDatabase = async () => {
                     "Laptop mỏng nhẹ, cấu hình ổn định cho công việc hàng ngày.",
                 price: 13990000,
                 image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80",
+                images: [
+                    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=80",
+                    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=90",
+                ],
+                category: "Laptop",
                 tags: ["promotion", "new"],
+                stock: 24,
                 sales: 55,
             },
             {
                 name: "MacBook Air M2",
                 brand: "Apple",
                 description:
-                    "Laptop mạnh mẽ với chip M2, thời lượng pin ấn tượng.",
+                    "Laptop mỏng nhẹ, hiệu năng cao với chip M2 và pin dùng cả ngày.",
                 price: 29990000,
                 image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
+                images: [
+                    "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
+                    "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=90",
+                ],
+                category: "Laptop",
                 tags: ["bestseller", "new"],
+                stock: 15,
                 sales: 180,
             },
             {
-                name: "ThinkPad X1 Carbon",
-                brand: "Lenovo",
-                description:
-                    "Laptop doanh nhân siêu bền, bàn phím cao cấp, cấu hình cao.",
-                price: 34990000,
-                image: "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?auto=format&fit=crop&w=800&q=80",
-                tags: ["promotion", "bestseller"],
-                sales: 130,
-            },
-            {
-                name: "Gaming Laptop ROG Strix",
+                name: "ROG Phone 7",
                 brand: "Asus",
                 description:
-                    "Laptop gaming hiệu năng cao, tản nhiệt tốt, thiết kế hầm hố.",
-                price: 25990000,
-                image: "https://images.unsplash.com/photo-1518459031867-a89b944bffe4?auto=format&fit=crop&w=800&q=80",
-                tags: ["bestseller"],
-                sales: 220,
+                    "Smartphone gaming mạnh mẽ, màn hình AMOLED 165Hz và sạc nhanh.",
+                price: 21990000,
+                image: "https://images.unsplash.com/photo-1512499617640-c2f999fe9342?auto=format&fit=crop&w=800&q=80",
+                images: [
+                    "https://images.unsplash.com/photo-1512499617640-c2f999fe9342?auto=format&fit=crop&w=1200&q=80",
+                    "https://images.unsplash.com/photo-1512499617640-c2f999fe9342?auto=format&fit=crop&w=1200&q=90",
+                ],
+                category: "Smartphone",
+                tags: ["promotion", "bestseller"],
+                stock: 8,
+                sales: 250,
             },
             {
-                name: "Dell XPS 13",
-                brand: "Dell",
+                name: "Galaxy S24 Ultra",
+                brand: "Samsung",
                 description:
-                    "Ultrabook cao cấp với màn hình sắc nét và thân máy mỏng nhẹ.",
-                price: 27990000,
-                image: "https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?auto=format&fit=crop&w=800&q=80",
+                    "Smartphone cao cấp với camera chuyên nghiệp và pin trâu.",
+                price: 32990000,
+                image: "https://images.unsplash.com/photo-1512499617640-c2f999fe9342?auto=format&fit=crop&w=800&q=80",
+                images: [
+                    "https://images.unsplash.com/photo-1512499617640-c2f999fe9342?auto=format&fit=crop&w=1200&q=80",
+                    "https://images.unsplash.com/photo-1512499617640-c2f999fe9342?auto=format&fit=crop&w=1200&q=90",
+                ],
+                category: "Smartphone",
+                tags: ["bestseller", "new"],
+                stock: 18,
+                sales: 210,
+            },
+            {
+                name: "Sony WH-1000XM5",
+                brand: "Sony",
+                description:
+                    "Tai nghe chống ồn cao cấp với âm thanh chi tiết và pin 30 giờ.",
+                price: 7990000,
+                image: "https://images.unsplash.com/photo-1511367461989-f85a21fda167?auto=format&fit=crop&w=800&q=80",
+                images: [
+                    "https://images.unsplash.com/photo-1511367461989-f85a21fda167?auto=format&fit=crop&w=1200&q=80",
+                    "https://images.unsplash.com/photo-1511367461989-f85a21fda167?auto=format&fit=crop&w=1200&q=90",
+                ],
+                category: "Headphone",
+                tags: ["promotion"],
+                stock: 40,
+                sales: 85,
+            },
+            {
+                name: "Apple Watch Series 9",
+                brand: "Apple",
+                description:
+                    "Smartwatch thông minh với màn hình sáng, theo dõi sức khỏe toàn diện.",
+                price: 11990000,
+                image: "https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?auto=format&fit=crop&w=800&q=80",
+                images: [
+                    "https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?auto=format&fit=crop&w=1200&q=80",
+                    "https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?auto=format&fit=crop&w=1200&q=90",
+                ],
+                category: "Smartwatch",
                 tags: ["new"],
+                stock: 30,
+                sales: 140,
+            },
+            {
+                name: "iPad Pro 11",
+                brand: "Apple",
+                description:
+                    "Tablet hiệu năng cao, màn hình Liquid Retina siêu mịn và nhẹ.",
+                price: 24990000,
+                image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80",
+                images: [
+                    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=80",
+                    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=90",
+                ],
+                category: "Tablet",
+                tags: ["bestseller"],
+                stock: 20,
                 sales: 95,
+            },
+            {
+                name: "Canon EOS R10",
+                brand: "Canon",
+                description:
+                    "Máy ảnh mirrorless nhẹ, lấy nét nhanh, phù hợp quay phim và chụp hình.",
+                price: 22990000,
+                image: "https://images.unsplash.com/photo-1519183071298-a2962be54afa?auto=format&fit=crop&w=800&q=80",
+                images: [
+                    "https://images.unsplash.com/photo-1519183071298-a2962be54afa?auto=format&fit=crop&w=1200&q=80",
+                    "https://images.unsplash.com/photo-1519183071298-a2962be54afa?auto=format&fit=crop&w=1200&q=90",
+                ],
+                category: "Camera",
+                tags: ["promotion"],
+                stock: 12,
+                sales: 60,
             },
         ];
         await Product.create(sampleProducts);
-        console.log("Seeded sample laptop products");
+        console.log("Seeded sample electronic products");
     }
 };
 
