@@ -45,6 +45,20 @@ const updateStockApi = (id, delta) => {
     return axios.patch(URL_API, { delta });
 };
 
+const searchProductsApi = (query = "", filters = {}) => {
+    const URL_API = "/v1/api/search";
+    const params = new URLSearchParams();
+    if (query) params.append("q", query);
+    if (filters.brand) params.append("brand", filters.brand);
+    if (filters.category) params.append("category", filters.category);
+    if (filters.minPrice !== undefined)
+        params.append("minPrice", filters.minPrice);
+    if (filters.maxPrice !== undefined)
+        params.append("maxPrice", filters.maxPrice);
+    if (filters.sort) params.append("sort", filters.sort);
+    return axios.get(`${URL_API}?${params.toString()}`);
+};
+
 const getAccountApi = () => {
     const URL_API = "/v1/api/account";
     return axios.get(URL_API);
@@ -70,5 +84,6 @@ export {
     getProductDetailApi,
     getAdminProductsApi,
     updateStockApi,
+    searchProductsApi,
     getAccountApi,
 };

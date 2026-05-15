@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const Product = require("../models/product");
+const Category = require("../models/category");
 const bcrypt = require("bcrypt");
 
 const seedDatabase = async () => {
@@ -17,6 +18,28 @@ const seedDatabase = async () => {
     }
 
     const productCount = await Product.countDocuments();
+    const categoryNames = [
+        "Laptop",
+        "Smartphone",
+        "Headphone",
+        "Smartwatch",
+        "Tablet",
+        "Camera",
+    ];
+
+    const existingCategories = await Category.find({
+        name: { $in: categoryNames },
+    });
+    const categoryMap = {};
+    await Promise.all(
+        categoryNames.map(async (name) => {
+            const category =
+                existingCategories.find((item) => item.name === name) ||
+                (await Category.create({ name }));
+            categoryMap[name] = category._id;
+        }),
+    );
+
     if (productCount === 0) {
         const sampleProducts = [
             {
@@ -30,7 +53,7 @@ const seedDatabase = async () => {
                     "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=80",
                     "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=90",
                 ],
-                category: "Laptop",
+                category: categoryMap["Laptop"],
                 tags: ["promotion", "new"],
                 stock: 24,
                 sales: 55,
@@ -46,7 +69,7 @@ const seedDatabase = async () => {
                     "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
                     "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=90",
                 ],
-                category: "Laptop",
+                category: categoryMap["Laptop"],
                 tags: ["bestseller", "new"],
                 stock: 15,
                 sales: 180,
@@ -62,7 +85,7 @@ const seedDatabase = async () => {
                     "https://images.unsplash.com/photo-1512499617640-c2f999fe9342?auto=format&fit=crop&w=1200&q=80",
                     "https://images.unsplash.com/photo-1512499617640-c2f999fe9342?auto=format&fit=crop&w=1200&q=90",
                 ],
-                category: "Smartphone",
+                category: categoryMap["Smartphone"],
                 tags: ["promotion", "bestseller"],
                 stock: 8,
                 sales: 250,
@@ -78,7 +101,7 @@ const seedDatabase = async () => {
                     "https://images.unsplash.com/photo-1512499617640-c2f999fe9342?auto=format&fit=crop&w=1200&q=80",
                     "https://images.unsplash.com/photo-1512499617640-c2f999fe9342?auto=format&fit=crop&w=1200&q=90",
                 ],
-                category: "Smartphone",
+                category: categoryMap["Smartphone"],
                 tags: ["bestseller", "new"],
                 stock: 18,
                 sales: 210,
@@ -94,7 +117,7 @@ const seedDatabase = async () => {
                     "https://images.unsplash.com/photo-1511367461989-f85a21fda167?auto=format&fit=crop&w=1200&q=80",
                     "https://images.unsplash.com/photo-1511367461989-f85a21fda167?auto=format&fit=crop&w=1200&q=90",
                 ],
-                category: "Headphone",
+                category: categoryMap["Headphone"],
                 tags: ["promotion"],
                 stock: 40,
                 sales: 85,
@@ -110,7 +133,7 @@ const seedDatabase = async () => {
                     "https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?auto=format&fit=crop&w=1200&q=80",
                     "https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?auto=format&fit=crop&w=1200&q=90",
                 ],
-                category: "Smartwatch",
+                category: categoryMap["Smartwatch"],
                 tags: ["new"],
                 stock: 30,
                 sales: 140,
@@ -126,7 +149,7 @@ const seedDatabase = async () => {
                     "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=80",
                     "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=90",
                 ],
-                category: "Tablet",
+                category: categoryMap["Tablet"],
                 tags: ["bestseller"],
                 stock: 20,
                 sales: 95,
@@ -142,7 +165,7 @@ const seedDatabase = async () => {
                     "https://images.unsplash.com/photo-1519183071298-a2962be54afa?auto=format&fit=crop&w=1200&q=80",
                     "https://images.unsplash.com/photo-1519183071298-a2962be54afa?auto=format&fit=crop&w=1200&q=90",
                 ],
-                category: "Camera",
+                category: categoryMap["Camera"],
                 tags: ["promotion"],
                 stock: 12,
                 sales: 60,
@@ -150,6 +173,23 @@ const seedDatabase = async () => {
         ];
         await Product.create(sampleProducts);
         console.log("Seeded sample electronic products");
+    } else {
+        const stringCategoryProducts = await Product.find({
+            category: { $type: "string" },
+        });
+        if (stringCategoryProducts.length > 0) {
+            await Promise.all(
+                stringCategoryProducts.map(async (product) => {
+                    const categoryName = product.category;
+                    product.category =
+                        categoryMap[categoryName] || categoryMap["Laptop"];
+                    await product.save();
+                }),
+            );
+            console.log(
+                "Updated existing product categories to category references.",
+            );
+        }
     }
 };
 

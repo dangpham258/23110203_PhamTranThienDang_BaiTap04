@@ -9,13 +9,14 @@ const auth = (req, res, next) => {
         "/forgot-password",
         "/reset-password",
         "/home",
+        "/search",
     ];
+    const urlPath = req.originalUrl.split("?")[0];
     const isPublicRoute = white_lists.some(
-        (item) => "/v1/api" + item === req.originalUrl,
+        (item) => urlPath === `/v1/api${item}` || urlPath === item,
     );
     const isPublicProductDetail =
-        req.method === "GET" &&
-        /^\/v1\/api\/products\/[^/]+$/.test(req.originalUrl);
+        req.method === "GET" && /^\/v1\/api\/products\/[^/]+$/.test(urlPath);
 
     if (isPublicRoute || isPublicProductDetail) {
         next();

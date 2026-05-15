@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button, Spin, Tag } from "antd";
 import { getProductDetailApi } from "../util/api";
+import { getCategoryLabel } from "../util/productHelpers";
 
 const ProductDetailPage = () => {
     const { id } = useParams();
@@ -103,7 +104,9 @@ const ProductDetailPage = () => {
 
                         <div className="space-y-4">
                             <div className="flex flex-wrap gap-2">
-                                <Tag color="blue">{product.category}</Tag>
+                                <Tag color="blue">
+                                    {getCategoryLabel(product.category)}
+                                </Tag>
                                 <Tag color="cyan">{product.brand}</Tag>
                                 <Tag
                                     color={
@@ -139,7 +142,7 @@ const ProductDetailPage = () => {
                                     <span className="font-semibold">
                                         Danh mục:
                                     </span>{" "}
-                                    {product.category}
+                                    {getCategoryLabel(product.category)}
                                 </p>
                                 <p>
                                     <span className="font-semibold">
@@ -181,7 +184,9 @@ const ProductDetailPage = () => {
                                                 {item.name}
                                             </p>
                                             <p className="text-sm text-slate-600">
-                                                {item.category}
+                                                {getCategoryLabel(
+                                                    item.category,
+                                                )}
                                             </p>
                                             <p className="mt-2 text-base font-medium text-slate-900">
                                                 {new Intl.NumberFormat(

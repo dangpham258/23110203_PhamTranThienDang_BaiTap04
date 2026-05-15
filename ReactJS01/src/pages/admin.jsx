@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Button, notification, Table, Tag } from "antd";
 import { AuthContext } from "../components/context/auth.context";
 import { getAdminProductsApi, updateStockApi } from "../util/api";
+import { getCategoryLabel } from "../util/productHelpers";
 
 const AdminPage = () => {
     const { auth } = useContext(AuthContext);
@@ -84,7 +85,9 @@ const AdminPage = () => {
             title: "Danh mục",
             dataIndex: "category",
             key: "category",
-            render: (category) => <Tag color="blue">{category}</Tag>,
+            render: (category) => (
+                <Tag color="blue">{getCategoryLabel(category)}</Tag>
+            ),
         },
         {
             title: "Kho",
@@ -137,7 +140,9 @@ const AdminPage = () => {
     const similarProducts = selectedProduct
         ? products.filter(
               (product) =>
-                  product.category === selectedProduct.category &&
+                  (product.category?._id || product.category) ===
+                      (selectedProduct.category?._id ||
+                          selectedProduct.category) &&
                   product._id !== selectedProduct._id,
           )
         : [];
@@ -235,7 +240,9 @@ const AdminPage = () => {
                                             Danh mục
                                         </p>
                                         <p className="text-lg font-semibold text-slate-900">
-                                            {selectedProduct.category}
+                                            {getCategoryLabel(
+                                                selectedProduct.category,
+                                            )}
                                         </p>
                                     </div>
                                     <div className="flex flex-wrap gap-2">
@@ -281,7 +288,9 @@ const AdminPage = () => {
                                                     {product.name}
                                                 </p>
                                                 <p className="text-sm text-slate-600">
-                                                    {product.category}
+                                                    {getCategoryLabel(
+                                                        product.category,
+                                                    )}
                                                 </p>
                                                 <p className="mt-2 text-base font-medium text-slate-900">
                                                     {new Intl.NumberFormat(

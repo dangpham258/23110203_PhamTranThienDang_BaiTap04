@@ -3,6 +3,7 @@ const {
     getProductDetailService,
     getAdminProductListService,
     updateProductStockService,
+    searchProductsService,
 } = require("../services/productService");
 
 const getHomepageData = async (req, res) => {
@@ -44,9 +45,24 @@ const updateProductStock = async (req, res) => {
     return res.status(200).json(data);
 };
 
+const searchProducts = async (req, res) => {
+    const query = req.query.q || "";
+    const filters = {
+        brand: req.query.brand || "",
+        category: req.query.category || "",
+        minPrice: req.query.minPrice,
+        maxPrice: req.query.maxPrice,
+        sort: req.query.sort || "new",
+    };
+
+    const data = await searchProductsService(query, filters);
+    return res.status(200).json(data);
+};
+
 module.exports = {
     getHomepageData,
     getProductDetail,
     getAdminProductList,
     updateProductStock,
+    searchProducts,
 };

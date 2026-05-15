@@ -1,10 +1,12 @@
 import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../components/context/auth.context";
 import { getHomeApi } from "../util/api";
+import { getCategoryLabel } from "../util/productHelpers";
 
 const HomePage = () => {
     const { auth } = useContext(AuthContext);
+    const navigate = useNavigate();
     const [homepageData, setHomepageData] = useState({
         promotions: [],
         newest: [],
@@ -145,7 +147,9 @@ const HomePage = () => {
                                             />
                                             <div className="p-5">
                                                 <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
-                                                    {product.category}
+                                                    {getCategoryLabel(
+                                                        product.category,
+                                                    )}
                                                 </span>
                                                 <h4 className="mt-3 text-lg font-semibold text-slate-900">
                                                     {product.name}
@@ -193,7 +197,9 @@ const HomePage = () => {
                                             />
                                             <div className="p-5">
                                                 <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
-                                                    {product.category}
+                                                    {getCategoryLabel(
+                                                        product.category,
+                                                    )}
                                                 </span>
                                                 <h4 className="mt-3 text-lg font-semibold text-slate-900">
                                                     {product.name}
@@ -241,7 +247,9 @@ const HomePage = () => {
                                             />
                                             <div className="p-5">
                                                 <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
-                                                    {product.category}
+                                                    {getCategoryLabel(
+                                                        product.category,
+                                                    )}
                                                 </span>
                                                 <h4 className="mt-3 text-lg font-semibold text-slate-900">
                                                     {product.name}

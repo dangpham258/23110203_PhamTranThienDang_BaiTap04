@@ -1,12 +1,20 @@
 const Product = require("../models/product");
+const Category = require("../models/category");
 
 const getHomepageDataService = async () => {
     try {
         const promotions = await Product.find({ tags: "promotion" })
             .sort({ sales: -1 })
-            .limit(4);
-        const newest = await Product.find().sort({ createdAt: -1 }).limit(4);
-        const bestSellers = await Product.find().sort({ sales: -1 }).limit(4);
+            .limit(4)
+            .populate("category");
+        const newest = await Product.find()
+            .sort({ createdAt: -1 })
+            .limit(4)
+            .populate("category");
+        const bestSellers = await Product.find()
+            .sort({ sales: -1 })
+            .limit(4)
+            .populate("category");
 
         return {
             EC: 0,
@@ -25,7 +33,7 @@ const getHomepageDataService = async () => {
 
 const getProductDetailService = async (productId) => {
     try {
-        const product = await Product.findById(productId);
+        const product = await Product.findById(productId).populate("category");
         if (!product) {
             return {
                 EC: 1,
@@ -34,11 +42,12 @@ const getProductDetailService = async (productId) => {
         }
 
         const similarProducts = await Product.find({
-            category: product.category,
+            category: product.category._id,
             _id: { $ne: product._id },
         })
             .sort({ sales: -1 })
-            .limit(4);
+            .limit(4)
+            .populate("category");
 
         return {
             EC: 0,
@@ -56,7 +65,9 @@ const getProductDetailService = async (productId) => {
 
 const getAdminProductListService = async () => {
     try {
-        const products = await Product.find().sort({ stock: 1, sales: -1 });
+        const products = await Product.find()
+            .sort({ stock: 1, sales: -1 })
+            .populate("category");
         const lowStockCount = products.filter(
             (product) => product.stock <= 10,
         ).length;
@@ -113,9 +124,98 @@ const updateProductStockService = async (productId, delta) => {
     }
 };
 
+const searchProductsService = async (query = "", filters = {}) => {
+    try {
+        const searchConditions = {};
+
+        if (query && query.trim()) {
+            searchConditions.$or = [
+                { name: { $regex: query, $options: "i" } },
+                { description: { $regex: query, $options: "i" } },
+                { brand: { $regex: query, $options: "i" } },
+            ];
+        }
+
+        if (filters.brand && filters.brand.trim()) {
+            searchConditions.brand = filters.brand;
+        }
+
+        if (filters.category && filters.category.trim()) {
+            searchConditions.category = filters.category;
+        }
+
+        const rangeConditions = { ...searchConditions };
+        if (filters.minPrice !== undefined && filters.maxPrice !== undefined) {
+            searchConditions.price = {
+                $gte: Number(filters.minPrice),
+                $lte: Number(filters.maxPrice),
+            };
+        }
+
+        let sortOption = { createdAt: -1 };
+        if (filters.sort) {
+            if (filters.sort === "price_asc") {
+                sortOption = { price: 1 };
+            } else if (filters.sort === "price_desc") {
+                sortOption = { price: -1 };
+            } else if (filters.sort === "sales_desc") {
+                sortOption = { sales: -1 };
+            } else if (filters.sort === "new") {
+                sortOption = { createdAt: -1 };
+            }
+        }
+
+        const products = await Product.find(searchConditions)
+            .sort(sortOption)
+            .populate("category")
+            .lean();
+
+        const distinctBrands = await Product.distinct("brand");
+        const categoryDocs = await Category.find().sort({ name: 1 }).lean();
+
+        const priceStats = await Product.aggregate([
+            { $match: rangeConditions },
+            {
+                $group: {
+                    _id: null,
+                    minPrice: { $min: "$price" },
+                    maxPrice: { $max: "$price" },
+                },
+            },
+        ]);
+
+        const priceRange =
+            priceStats.length > 0
+                ? {
+                      min: priceStats[0].minPrice,
+                      max: priceStats[0].maxPrice,
+                  }
+                : { min: 0, max: 0 };
+
+        return {
+            EC: 0,
+            products,
+            brands: distinctBrands,
+            categories: categoryDocs.map((item) => ({
+                _id: item._id,
+                name: item.name,
+            })),
+            priceRange,
+            count: products.length,
+        };
+    } catch (error) {
+        console.error("searchProductsService error:", error);
+        return {
+            EC: 1,
+            EM: "Không thể tìm kiếm sản phẩm",
+        };
+    }
+};
+
 module.exports = {
     getHomepageDataService,
     getProductDetailService,
     getAdminProductListService,
     updateProductStockService,
+    searchProductsService,
 };

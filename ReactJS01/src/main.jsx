@@ -7,6 +7,7 @@ import RegisterPage from "./pages/register.jsx";
 import UserPage from "./pages/user.jsx";
 import AdminPage from "./pages/admin.jsx";
 import ProductDetailPage from "./pages/productDetail.jsx";
+import SearchPage from "./pages/search.jsx";
 import HomePage from "./pages/home.jsx";
 import LoginPage from "./pages/login.jsx";
 import ForgotPasswordPage from "./pages/forgotPassword.jsx";
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
             {
                 path: "product/:id",
                 element: <ProductDetailPage />,
+            },
+            {
+                path: "search",
+                element: <SearchPage />,
             },
         ],
     },

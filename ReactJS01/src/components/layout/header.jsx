@@ -3,6 +3,7 @@ import {
     UsergroupAddOutlined,
     HomeOutlined,
     SettingOutlined,
+    SearchOutlined,
 } from "@ant-design/icons";
 import { Menu } from "antd";
 import { Link, useNavigate } from "react-router-dom";
@@ -15,9 +16,14 @@ const Header = () => {
     const displayName = auth?.user?.name || auth?.user?.email || "Khách";
     const items = [
         {
-            label: <Link to={"/"}>Home Page</Link>,
+            label: <Link to={"/"}>Trang chủ</Link>,
             key: "home",
             icon: <HomeOutlined />,
+        },
+        {
+            label: <Link to={"/search"}>Tìm kiếm</Link>,
+            key: "search",
+            icon: <SearchOutlined />,
         },
         ...(isAdmin
             ? [
@@ -27,7 +33,7 @@ const Header = () => {
                       icon: <SettingOutlined />,
                   },
                   {
-                      label: <Link to={"/user"}>Users</Link>,
+                      label: <Link to={"/user"}>Người dùng</Link>,
                       key: "user",
                       icon: <UsergroupAddOutlined />,
                   },

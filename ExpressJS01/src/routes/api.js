@@ -12,6 +12,7 @@ const {
     getProductDetail,
     getAdminProductList,
     updateProductStock,
+    searchProducts,
 } = require("../controllers/productController");
 const auth = require("../middleware/auth");
 
@@ -28,6 +29,7 @@ routerAPI.post("/login", handleLogin);
 routerAPI.post("/forgot-password", forgotPassword);
 routerAPI.post("/reset-password", resetPassword);
 routerAPI.get("/home", getHomepageData);
+routerAPI.get("/search", searchProducts);
 routerAPI.get("/products", getAdminProductList);
 routerAPI.get("/products/:id", getProductDetail);
 routerAPI.patch("/products/:id/stock", updateProductStock);

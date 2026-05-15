@@ -8,7 +8,11 @@ const productSchema = new mongoose.Schema(
         price: { type: Number, required: true },
         image: String,
         images: [String],
-        category: { type: String, default: "Laptop" },
+        category: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Category",
+            required: true,
+        },
         tags: [String],
         stock: { type: Number, default: 20 },
         sales: { type: Number, default: 0 },
